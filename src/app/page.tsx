@@ -15,6 +15,8 @@ import FAQ from "@/components/sections/faq";
 import Contact from "@/components/sections/contact";
 import FinalCTA from "@/components/sections/final-cta";
 import Footer from "@/components/sections/footer";
+import { PageTransitionLoader } from "@/components/ui/page-transition-loader";
+import { InitialLoader } from "@/components/ui/initial-loader";
 import { useSmoothScroll } from "@/lib/scroll-smooth";
 
 export default function Home() {
@@ -23,9 +25,12 @@ export default function Home() {
 
   return (
     <ThemeProvider>
-      <div className="min-h-screen bg-background text-foreground">
-        {/* Navigation */}
-        <NavBar />
+      <InitialLoader>
+        <div className="min-h-screen bg-background text-foreground">
+          <PageTransitionLoader />
+          
+          {/* Navigation */}
+          <NavBar />
         
         {/* Main Content */}
         <main>
@@ -66,6 +71,7 @@ export default function Home() {
         {/* Footer */}
         <Footer />
       </div>
+    </InitialLoader>
     </ThemeProvider>
   );
 }

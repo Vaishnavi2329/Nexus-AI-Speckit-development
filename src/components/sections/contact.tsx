@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Mail, Phone, MessageSquare, Send, CheckCircle, AlertCircle, User, Building, HelpCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { AsyncButton } from "@/components/ui/async-button";
 import { useAnalytics } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
 
@@ -533,24 +534,61 @@ export function Contact({ className }: ContactProps) {
                 )}
 
                 {/* Submit Button */}
-                <Button
-                  type="submit"
-                  disabled={!isValid || !isDirty || isSubmitting}
+                <AsyncButton
+                  onClick={async () => {
+                    const data = watchedValues;
+                    if (!data.name || !data.email || !data.subject || !data.message || !data.inquiryType || !data.consent) {
+                      throw new Error('Please fill in all required fields');
+                    }
+                    
+                    setIsSubmitting(true);
+                    setSubmitError(null);
+
+                    try {
+                      // Track form submission start
+                      trackConversion('form_submit', 'contact_form_start', data.inquiryType);
+                      trackEngagement('section_view', 'contact_submit', 'contact');
+
+                      // Simulate API call (in real app, this would be an actual API call)
+                      await new Promise(resolve => setTimeout(resolve, 2000));
+
+                      // Store submission in localStorage
+                      const submissions = JSON.parse(localStorage.getItem('contactSubmissions') || '[]');
+                      const newSubmission = {
+                        id: Date.now(),
+                        ...data,
+                        timestamp: new Date().toISOString(),
+                        userAgent: navigator.userAgent,
+                        referrer: document.referrer
+                      };
+                      submissions.push(newSubmission);
+                      localStorage.setItem('contactSubmissions', JSON.stringify(submissions));
+
+                      // Track successful submission
+                      trackConversion('form_submit', 'contact_form_success', data.inquiryType);
+                      trackEngagement('section_view', 'contact_success', 'contact');
+
+                      setIsSubmitted(true);
+                      reset();
+                    } catch (error) {
+                      console.error('Form submission error:', error);
+                      setSubmitError('Failed to submit form. Please try again.');
+                      
+                      // Track submission error
+                      trackConversion('form_submit', 'contact_form_error', 'contact');
+                      trackEngagement('section_view', 'contact_error', 'contact');
+                    } finally {
+                      setIsSubmitting(false);
+                    }
+                  }}
+                  disabled={!isValid || !isDirty}
+                  loadingText="Sending message..."
                   className="w-full"
                   size="lg"
                 >
-                  {isSubmitting ? (
-                    <>
-                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
-                      Sending...
-                    </>
-                  ) : (
-                    <>
-                      <Send className="w-4 h-4 mr-2" />
-                      Send Message
-                    </>
-                  )}
-                </Button>
+                  <Send className="w-4 h-4 mr-2" />
+                  Send Message
+                </AsyncButton>
               </form>
             </motion.div>
           </motion.div>
