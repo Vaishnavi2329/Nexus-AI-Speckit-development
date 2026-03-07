@@ -1,6 +1,7 @@
 import * as React from "react"
 import { cva, type VariantProps } from "class-variance-authority"
-import { Slot } from "radix-ui"
+import { Slot } from "@radix-ui/react-slot"
+import { motion, type HTMLMotionProps } from "framer-motion"
 
 import { cn } from "@/lib/utils"
 
@@ -41,17 +42,43 @@ const buttonVariants = cva(
   }
 )
 
+interface ButtonProps extends React.ComponentProps<"button"> {
+  variant?: VariantProps<typeof buttonVariants>["variant"]
+  size?: VariantProps<typeof buttonVariants>["size"]
+  asChild?: boolean
+  whileHover?: any
+  whileTap?: any
+  animate?: any
+  initial?: any
+  exit?: any
+  variants?: any
+  transition?: any
+}
+
 function Button({
   className,
   variant = "default",
   size = "default",
   asChild = false,
   ...props
-}: React.ComponentProps<"button"> &
-  VariantProps<typeof buttonVariants> & {
-    asChild?: boolean
-  }) {
-  const Comp = asChild ? Slot.Root : "button"
+}: any) {
+  // Check if Framer Motion props are passed
+  const hasMotionProps = 'whileHover' in props || 'whileTap' in props || 'animate' in props;
+  const Comp = asChild ? Slot : hasMotionProps ? motion.button : "button"
+
+  // Extract motion props
+  const { whileHover, whileTap, animate, initial, exit, variants, transition, ...restProps } = props;
+
+  // Prepare motion props if needed
+  const motionProps = hasMotionProps ? {
+    whileHover,
+    whileTap,
+    animate,
+    initial,
+    exit,
+    variants,
+    transition
+  } : {};
 
   return (
     <Comp
@@ -59,7 +86,8 @@ function Button({
       data-variant={variant}
       data-size={size}
       className={cn(buttonVariants({ variant, size, className }))}
-      {...props}
+      {...restProps}
+      {...motionProps}
     />
   )
 }
