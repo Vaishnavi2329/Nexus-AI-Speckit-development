@@ -142,7 +142,7 @@ export function Hero({ className }: HeroProps) {
         >
           <span className="block">Transform your</span>
           <span className="block text-gradient">
-            <AnimatePresence mode="wait">
+            <AnimatePresence>
               <motion.span
                 key={currentKeywordIndex}
                 variants={keywordVariants}

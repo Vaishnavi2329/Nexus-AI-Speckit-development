@@ -293,7 +293,7 @@ export function FAQ({ className }: FAQProps) {
           whileInView="animate"
           viewport={{ once: true }}
         >
-          <AnimatePresence mode="wait">
+          <AnimatePresence>
             {filteredFAQs.map((item, index) => {
               const isExpanded = expandedItems.includes(item.id);
               const Icon = item.icon;

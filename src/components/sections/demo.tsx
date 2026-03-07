@@ -258,7 +258,7 @@ export function Demo({ className }: DemoProps) {
 
             {/* Chat Messages */}
             <div className="h-96 overflow-y-auto p-6 space-y-4">
-              <AnimatePresence mode="wait">
+              <AnimatePresence>
                 {currentMessages.slice(0, currentMessageIndex + 1).map((message, index) => (
                   <motion.div
                     key={`${message.id}-${index}`}

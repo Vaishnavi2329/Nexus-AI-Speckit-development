@@ -217,7 +217,7 @@ export function Testimonials({ className }: TestimonialsProps) {
             </motion.div>
 
             {/* Current Testimonial (Center) */}
-            <AnimatePresence initial={false} custom={direction} mode="wait">
+            <AnimatePresence initial={false} custom={direction}>
               <motion.div
                 key={page}
                 className="absolute w-96 h-[500px] z-10"

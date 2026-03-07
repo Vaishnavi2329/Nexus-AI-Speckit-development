@@ -264,7 +264,7 @@ export function NavBar({ items = navItems, className }: NavBarProps) {
                 whileTap={{ scale: 0.95 }}
                 aria-label="Toggle theme"
               >
-                <AnimatePresence mode="wait">
+                <AnimatePresence>
                   {theme.mode === 'dark' ? (
                     <motion.div
                       key="sun"
