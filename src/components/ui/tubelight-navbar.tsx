@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import { LucideIcon, Moon, Sun } from "lucide-react";
+import { LucideIcon, Moon, Sun, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useTheme } from "@/components/ui/providers";
 import { useAnalytics } from "@/lib/analytics";
@@ -319,59 +319,131 @@ export function NavBar({ items = navItems, className }: NavBarProps) {
           </motion.button>
         </div>
 
-        {/* Mobile Menu */}
+        {/* Mobile Sidebar */}
         <AnimatePresence>
           {isMobile && isMenuOpen && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.3, ease: "easeInOut" }}
-              className="md:hidden border-t border-border bg-background/95 backdrop-blur-lg"
-            >
-              <div className="px-4 py-4 space-y-2">
-                {items.map((item, index) => {
-                  const Icon = item.icon;
-                  const isActive = activeTab === item.name;
+            <>
+              {/* Backdrop */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+                className="md:hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-40"
+                onClick={() => setIsMenuOpen(false)}
+              />
+              
+              {/* Sidebar */}
+              <motion.div
+                initial={{ x: '100%' }}
+                animate={{ x: 0 }}
+                exit={{ x: '100%' }}
+                transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+                className="md:hidden fixed top-0 right-0 h-full w-80 bg-background border-l border-border shadow-2xl z-50 overflow-y-auto"
+              >
+                {/* Sidebar Header */}
+                <div className="flex items-center justify-between p-4 border-b border-border">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                      Nexus AI
+                    </span>
+                  </div>
+                  <motion.button
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                    onClick={() => setIsMenuOpen(false)}
+                    className="p-2 rounded-lg hover:bg-muted/80 transition-colors"
+                    aria-label="Close sidebar"
+                  >
+                    <X className="w-5 h-5" />
+                  </motion.button>
+                </div>
 
-                  return (
-                    <motion.div
-                      key={item.name}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: index * 0.1, duration: 0.3 }}
-                    >
-                      <Link
-                        href={item.url}
-                        onClick={() => handleNavClick(item)}
-                        className={cn(
-                          "flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-300",
-                          "text-foreground/80 hover:text-foreground hover:bg-muted/50",
-                          isActive && "bg-primary/10 text-primary"
-                        )}
+                {/* Navigation Items */}
+                <div className="p-4 space-y-2">
+                  {items.map((item, index) => {
+                    const Icon = item.icon;
+                    const isActive = activeTab === item.name;
+
+                    return (
+                      <motion.div
+                        key={item.name}
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: index * 0.1, duration: 0.3 }}
                       >
-                        <Icon size={20} strokeWidth={2.5} />
-                        <span>{item.name}</span>
-                        
-                        {/* Active indicator */}
-                        {isActive && (
+                        <Link
+                          href={item.url}
+                          onClick={() => handleNavClick(item)}
+                          className={cn(
+                            "flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-300",
+                            "text-foreground/80 hover:text-foreground hover:bg-muted/50",
+                            isActive && "bg-primary/10 text-primary border-l-2 border-primary"
+                          )}
+                        >
+                          <Icon size={20} strokeWidth={2.5} />
+                          <span>{item.name}</span>
+                          
+                          {/* Active indicator */}
+                          {isActive && (
+                            <motion.div
+                              layoutId="mobile-sidebar-indicator"
+                              className="ml-auto w-2 h-2 bg-primary rounded-full"
+                              initial={false}
+                              transition={{
+                                type: "spring",
+                                stiffness: 300,
+                                damping: 30,
+                              }}
+                            />
+                          )}
+                        </Link>
+                      </motion.div>
+                    );
+                  })}
+                </div>
+
+                {/* Sidebar Footer */}
+                <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-border bg-muted/30">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-muted-foreground">
+                      © 2024 Nexus AI
+                    </span>
+                    <motion.button
+                      onClick={toggleTheme}
+                      className="p-2 rounded-lg hover:bg-muted/80 transition-colors"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      aria-label="Toggle theme"
+                    >
+                      <AnimatePresence mode="wait">
+                        {theme.mode === 'dark' ? (
                           <motion.div
-                            layoutId="mobile-tubelight"
-                            className="absolute right-2 top-1/2 -translate-y-1/2 w-2 h-2 bg-primary rounded-full"
-                            initial={false}
-                            transition={{
-                              type: "spring",
-                              stiffness: 300,
-                              damping: 30,
-                            }}
-                          />
+                            key="sun"
+                            initial={{ rotate: -90, opacity: 0 }}
+                            animate={{ rotate: 0, opacity: 1 }}
+                            exit={{ rotate: 90, opacity: 0 }}
+                            transition={{ duration: 0.3 }}
+                          >
+                            <Sun size={18} strokeWidth={2} />
+                          </motion.div>
+                        ) : (
+                          <motion.div
+                            key="moon"
+                            initial={{ rotate: -90, opacity: 0 }}
+                            animate={{ rotate: 0, opacity: 1 }}
+                            exit={{ rotate: 90, opacity: 0 }}
+                            transition={{ duration: 0.3 }}
+                          >
+                            <Moon size={18} strokeWidth={2} />
+                          </motion.div>
                         )}
-                      </Link>
-                    </motion.div>
-                  );
-                })}
-              </div>
-            </motion.div>
+                      </AnimatePresence>
+                    </motion.button>
+                  </div>
+                </div>
+              </motion.div>
+            </>
           )}
         </AnimatePresence>
       </div>
