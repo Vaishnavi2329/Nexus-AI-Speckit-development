@@ -303,7 +303,7 @@ class US2Tester {
           perspectiveElements: perspectiveElements.length,
           preserve3DElements: preserve3DElements.length,
           rotate3DElements: rotate3DElements.length,
-          float3DElements: float3DEffects.length,
+          float3DElements: float3DElements.length,
           card3DEffects: card3DEffects.length,
           testimonialCards: testimonialCards.length,
           platformCards: platformCards.length,

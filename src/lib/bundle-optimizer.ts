@@ -350,10 +350,11 @@ export class BundleOptimizer {
     const observer = new PerformanceObserver((list) => {
       list.getEntries().forEach((entry) => {
         if (entry.name.includes('chunk')) {
+          const resourceEntry = entry as PerformanceResourceTiming;
           analytics.trackEvent('chunk_load_time', {
             chunkName: entry.name,
             loadTime: entry.duration,
-            size: entry.transferSize
+            size: resourceEntry.transferSize
           });
         }
       });

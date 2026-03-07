@@ -35,9 +35,9 @@ class BrowserCompatibilityTester {
         destructuring: (() => { const [a] = [1]; return a === 1; })(),
         spreadOperator: [...[1, 2, 3]].length === 3,
         optionalChaining: typeof window !== 'undefined' && window?.navigator !== undefined,
-        nullishCoalescing: null ?? 'test' === 'test',
+        nullishCoalescing: (() => { const test = null; return test ?? 'test' === 'test'; })(),
         modules: typeof module !== 'undefined' || typeof window !== 'undefined',
-        classes: class Test {} !== undefined,
+        classes: (() => { class Test {}; return typeof Test === 'function'; })(),
         generators: function* gen() { yield 1; }.constructor.name === 'GeneratorFunction'
       };
       

@@ -14,14 +14,17 @@ export const useSmoothScroll = () => {
       if (link) {
         e.preventDefault();
         const targetId = link.getAttribute('href');
-        const targetElement = document.querySelector(targetId);
         
-        if (targetElement) {
-          targetElement.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start',
-            inline: 'nearest'
-          });
+        if (targetId) {
+          const targetElement = document.querySelector(targetId);
+          
+          if (targetElement) {
+            targetElement.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start',
+              inline: 'nearest'
+            });
+          }
         }
       }
     };

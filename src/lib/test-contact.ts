@@ -109,7 +109,7 @@ class ContactTester {
       const duration = performance.now() - startTime;
       return {
         testName: 'React Hook Form Integration',
-        passed: hasRequiredFields && hasRequiredAttributes,
+        passed: !!(hasRequiredFields && hasRequiredAttributes),
         message: `Required fields: ${hasRequiredFields}, required attributes: ${hasRequiredAttributes}, error elements: ${hasErrorElements}`,
         duration,
         details: {

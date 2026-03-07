@@ -63,7 +63,7 @@ export function HowItWorks({ className }: HowItWorksProps) {
 
   const handleStepClick = (stepId: number) => {
     setActiveStep(stepId);
-    trackEngagement('step_view', stepId, 'how-it-works');
+    trackEngagement('section_view', stepId, 'how-it-works');
   };
 
   const handleGetStarted = () => {

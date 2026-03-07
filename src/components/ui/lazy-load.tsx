@@ -90,7 +90,7 @@ export function LazyLoad({
 
   return (
     <div className={cn("gpu-accelerated", className)}>
-      {React.cloneElement(children as React.ReactElement, {
+      {React.cloneElement(children as React.ReactElement<any>, {
         onLoad: handleLoad,
         onError: handleError,
       })}

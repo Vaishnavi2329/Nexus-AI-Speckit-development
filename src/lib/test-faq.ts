@@ -110,7 +110,7 @@ class FAQTester {
       const duration = performance.now() - startTime;
       return {
         testName: 'Search Functionality',
-        passed: hasPlaceholder && hasSearchIcon && canSearch,
+        passed: !!(hasPlaceholder && hasSearchIcon && canSearch),
         message: `Search input with placeholder: ${hasPlaceholder}, icon: ${hasSearchIcon}, functional: ${canSearch}`,
         duration,
         details: {
