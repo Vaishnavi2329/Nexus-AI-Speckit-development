@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Moon, Sun, Zap, Mail, Calendar, CheckCircle } from "lucide-react";
+import { Moon, Sun, Zap, Mail, Calendar, CheckCircle, AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/components/ui/providers";
 import { useAnalytics } from "@/lib/analytics";
@@ -26,8 +26,11 @@ const rotatingKeywords = [
 export function Hero({ className }: HeroProps) {
   const [currentKeywordIndex, setCurrentKeywordIndex] = useState(0);
   const [isVisible, setIsVisible] = useState(true);
+  const [scrollY, setScrollY] = useState(0);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const { theme } = useTheme();
   const { trackConversion, trackEngagement } = useAnalytics();
+  const heroRef = useRef<HTMLDivElement>(null);
 
   // Rotate keywords
   useEffect(() => {
@@ -40,6 +43,33 @@ export function Hero({ className }: HeroProps) {
     }, 3000);
 
     return () => clearInterval(interval);
+  }, []);
+
+  // Handle scroll for parallax
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const handleScroll = () => {
+      setScrollY(window.scrollY);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Initial call
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Handle mouse movement for parallax
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePosition({ x: e.clientX, y: e.clientY });
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+
+    return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
   // Handle CTA clicks
@@ -107,6 +137,7 @@ export function Hero({ className }: HeroProps) {
 
   return (
     <section
+      ref={heroRef}
       id="hero"
       className={cn(
         "min-h-screen flex items-center justify-center relative overflow-hidden",
@@ -114,9 +145,53 @@ export function Hero({ className }: HeroProps) {
         className
       )}
     >
-      {/* Animated background grid */}
-      <div className="absolute inset-0 opacity-30">
-        <div className="absolute inset-0 bg-grid animate-grid" />
+      {/* Parallax Background Layers - Client Only */}
+      <div className="absolute inset-0">
+        {/* Static background for SSR fallback */}
+        <div className="absolute inset-0 bg-gradient-to-b from-sky-1900 to-sky-1700 opacity-50" />
+        
+        {/* Dynamic layers - only render on client */}
+        {typeof window !== 'undefined' && (
+          <>
+            {/* Layer 1 - Slow moving shapes */}
+            <div 
+              className="absolute inset-0 transition-transform duration-300 ease-out"
+              style={{
+                transform: `translateY(${scrollY * 0.2}px) translateX(${(mousePosition.x - window.innerWidth / 2) * 0.02}px)`
+              }}
+            >
+              <div className="absolute top-20 left-10 w-32 h-32 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-full blur-2xl" />
+              <div className="absolute top-1/2 right-20 w-48 h-48 bg-gradient-to-tr from-purple-500/15 to-pink-500/15 rounded-full blur-3xl" />
+              <div className="absolute bottom-20 left-1/3 w-40 h-40 bg-gradient-to-bl from-cyan-500/10 to-blue-500/10 rounded-full blur-xl" />
+            </div>
+
+            {/* Layer 2 - Medium speed shapes */}
+            <div 
+              className="absolute inset-0 transition-transform duration-200 ease-out"
+              style={{
+                transform: `translateY(${scrollY * 0.5}px) translateX(${(mousePosition.x - window.innerWidth / 2) * 0.05}px)`
+              }}
+            >
+              <div className="absolute top-1/3 left-1/4 w-24 h-24 bg-gradient-to-r from-indigo-500/20 to-blue-500/20 rounded-lg blur-lg rotate-45" />
+              <div className="absolute top-2/3 right-1/3 w-36 h-36 bg-gradient-to-l from-pink-500/15 to-purple-500/15 rounded-full blur-xl rotate-12" />
+              <div className="absolute bottom-1/3 left-1/2 w-28 h-28 bg-gradient-to-t from-cyan-500/15 to-teal-500/15 rounded-lg blur-lg rotate-45" />
+            </div>
+
+            {/* Layer 3 - Fast moving shapes */}
+            <div 
+              className="absolute inset-0 transition-transform duration-100 ease-out"
+              style={{
+                transform: `translateY(${scrollY * 0.8}px) translateX(${(mousePosition.x - window.innerWidth / 2) * 0.1}px)`
+              }}
+            >
+              <div className="absolute top-1/4 right-1/4 w-16 h-16 bg-gradient-to-br from-violet-500/25 to-fuchsia-500/25 rounded-md blur-md rotate-12" />
+              <div className="absolute bottom-1/4 left-1/4 w-20 h-20 bg-gradient-to-tl from-rose-500/20 to-pink-500/20 rounded-full blur-lg rotate-45" />
+            </div>
+          </>
+        )}
+
+        {/* Overlay gradient for depth */}
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background/30" />
       </div>
 
       {/* Hero content */}
@@ -129,7 +204,7 @@ export function Hero({ className }: HeroProps) {
         {/* Badge */}
         <motion.div
           variants={itemVariants}
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary border border-primary/20 mb-8 glass-effect"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-primary mb-8 shadow-lg hover:bg-white/20 hover:border-white/30 transition-all duration-300"
         >
           <Zap className="w-4 h-4" />
           <span className="text-sm font-medium">AI-Powered Productivity</span>
@@ -175,7 +250,7 @@ export function Hero({ className }: HeroProps) {
         >
           <Button
             size="lg"
-            className="px-8 py-4 text-lg font-medium bg-primary text-primary-foreground hover:bg-primary/90 glow-effect zoom-effect btn-primary"
+            className="px-8 py-4 text-lg font-medium bg-white/20 backdrop-blur-lg border border-white/30 text-primary-foreground hover:bg-white/30 hover:border-white/40 shadow-xl transition-all duration-300 hover:scale-105 active:scale-95"
             onClick={handleGetStarted}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -187,7 +262,7 @@ export function Hero({ className }: HeroProps) {
           <Button
             variant="outline"
             size="lg"
-            className="px-8 py-4 text-lg font-medium border-2 border-border hover:bg-muted/50 glow-effect zoom-effect"
+            className="px-8 py-4 text-lg font-medium bg-white/10 backdrop-blur-md border border-white/20 text-primary-foreground hover:bg-white/20 hover:border-white/30 shadow-lg transition-all duration-300 hover:scale-105 active:scale-95"
             onClick={handleLearnMore}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -200,26 +275,26 @@ export function Hero({ className }: HeroProps) {
         {/* Trust indicators */}
         <motion.div
           variants={itemVariants}
-          className="mt-16 flex flex-col sm:flex-row gap-8 items-center justify-center text-muted-foreground"
+          className="mt-16 flex flex-col sm:flex-row gap-8 items-center justify-center"
         >
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 px-4 py-3 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 shadow-lg">
             <CheckCircle className="w-5 h-5 text-green-500" />
-            <span>14-day free trial</span>
+            <span className="text-sm font-medium">14-day free trial</span>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 px-4 py-3 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 shadow-lg">
             <CheckCircle className="w-5 h-5 text-green-500" />
-            <span>No credit card required</span>
+            <span className="text-sm font-medium">No credit card required</span>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 px-4 py-3 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 shadow-lg">
             <CheckCircle className="w-5 h-5 text-green-500" />
-            <span>Cancel anytime</span>
+            <span className="text-sm font-medium">Cancel anytime</span>
           </div>
         </motion.div>
       </motion.div>
 
       {/* Floating elements */}
       <motion.div
-        className="absolute top-20 left-10 w-20 h-20 bg-primary/10 rounded-full blur-xl float-animation"
+        className="absolute top-20 left-10 w-20 h-20 bg-white/20 backdrop-blur-lg border border-white/30 rounded-full blur-xl float-animation"
         animate={{
           y: [-10, 10, -10],
           x: [-5, 5, -5]
@@ -232,7 +307,7 @@ export function Hero({ className }: HeroProps) {
       />
       
       <motion.div
-        className="absolute bottom-20 right-10 w-32 h-32 bg-purple-500/10 rounded-full blur-2xl float-animation"
+        className="absolute bottom-20 right-10 w-32 h-32 bg-white/20 backdrop-blur-lg border border-white/30 rounded-full blur-2xl float-animation"
         animate={{
           y: [10, -10, 10],
           x: [5, -5, 5]
@@ -246,7 +321,7 @@ export function Hero({ className }: HeroProps) {
       />
 
       <motion.div
-        className="absolute top-1/2 left-1/4 w-24 h-24 bg-blue-500/10 rounded-full blur-xl float-animation"
+        className="absolute top-1/2 left-1/4 w-24 h-24 bg-white/20 backdrop-blur-lg border border-white/30 rounded-full blur-xl float-animation"
         animate={{
           y: [-15, 15, -15],
           x: [-10, 10, -10]
