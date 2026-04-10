@@ -283,7 +283,7 @@ export function Pricing({ className }: PricingProps) {
                   <div className="mb-8">
                     <h4 className="font-semibold text-foreground mb-4">What's included:</h4>
                     <ul className="space-y-3">
-                      {plan.features && Array.isArray(plan.features) && plan.features.map((feature, featureIndex) => (
+                      {plan.features && Array.isArray(plan.features) && plan.features.map((feature: string, featureIndex: number) => (
                         <li key={featureIndex} className="feature-item flex items-start gap-3">
                           <CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
                           <span className="text-sm text-foreground">{feature}</span>
@@ -296,7 +296,7 @@ export function Pricing({ className }: PricingProps) {
                       <div className="mt-4 pt-4 border-t border-border">
                         <h4 className="font-semibold text-foreground mb-2">Limitations:</h4>
                         <ul className="space-y-2">
-                          {plan.limitations.map((limitation, limitIndex) => (
+                          {plan.limitations.map((limitation: string, limitIndex: number) => (
                             <li key={limitIndex} className="flex items-start gap-3">
                               <div className="w-5 h-5 rounded-full bg-muted-foreground/20 flex items-center justify-center flex-shrink-0 mt-0.5">
                                 <div className="w-2 h-2 bg-muted-foreground rounded-full" />
