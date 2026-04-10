@@ -111,7 +111,7 @@
       {
         "id": "starter",
         "name": "Starter",
-        "price": 0,
+        "price": 12,
         "period": "month",
         "description": "Perfect for individuals and small teams getting started",
         "features": [

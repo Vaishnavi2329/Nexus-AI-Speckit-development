@@ -50,6 +50,18 @@ export function SiteDataProvider({ children }: { children: React.ReactNode }) {
     };
 
     loadSiteData();
+
+    // Listen for site data updates from admin panel
+    const handleSiteDataUpdate = () => {
+      console.log('Site data updated, refreshing...');
+      loadSiteData();
+    };
+
+    window.addEventListener('site-data-updated', handleSiteDataUpdate);
+
+    return () => {
+      window.removeEventListener('site-data-updated', handleSiteDataUpdate);
+    };
   }, []);
 
   const updateSiteData = (updates: Partial<SiteData>) => {
