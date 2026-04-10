@@ -92,7 +92,8 @@ export function SiteDataProvider({ children }: { children: React.ReactNode }) {
   const contextValue: SiteDataContextType = {
     siteData,
     setSiteData,
-    updateSiteData
+    updateSiteData,
+    refreshSiteData
   };
 
   return (

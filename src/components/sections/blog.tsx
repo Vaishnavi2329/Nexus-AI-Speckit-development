@@ -45,14 +45,14 @@ export default function Blog({ className }: BlogProps) {
     : blogPosts.filter((post: BlogPost) => post.category === selectedCategory);
 
   const handlePostClick = (post: BlogPost) => {
-    trackConversion('blog_click', 'post_read', post.title);
+    trackConversion('cta_click', 'post_read', post.title);
     trackEngagement('section_view', post.id, 'blog');
     console.log(`Reading blog post: ${post.title}`);
   };
 
   const handleCategoryClick = (category: string) => {
     setSelectedCategory(category);
-    trackConversion('blog_filter', 'category_filter', category);
+    trackConversion('cta_click', 'category_filter', category);
     trackEngagement('section_view', category, 'blog');
   };
 
@@ -271,7 +271,7 @@ export default function Blog({ className }: BlogProps) {
               size="lg"
               className="bg-primary text-primary-foreground hover:bg-primary/90"
               onClick={() => {
-                trackConversion('blog_click', 'view_all', 'blog');
+                trackConversion('cta_click', 'view_all', 'blog');
                 trackEngagement('section_view', 'view_all', 'blog');
               }}
             >
