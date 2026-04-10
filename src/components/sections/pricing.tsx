@@ -6,96 +6,41 @@ import { CheckCircle2, Star, ArrowRight, Zap, Shield, Users, Crown, Sparkles } f
 import { Button } from "@/components/ui/button";
 import { useAnalytics } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
+import { useSiteData } from "@/contexts/site-data-context";
 
 interface PricingProps {
   className?: string;
 }
 
-// Pricing plans data
-const pricingPlans = [
-  {
-    id: "starter",
-    name: "Starter",
-    description: "Perfect for individuals and small teams getting started",
-    price: 0,
-    period: "month",
-    originalPrice: null,
-    badge: null,
-    featured: false,
-    image: "🌱",
-    features: [
-      "Up to 3 users",
-      "1,000 AI tasks/month",
-      "Basic integrations",
-      "Email support",
-      "Standard analytics",
-      "Mobile app access"
-    ],
-    limitations: [
-      "Limited automation rules",
-      "Basic reporting only"
-    ],
-    cta: "Get Started Free",
-    color: "green"
-  },
-  {
-    id: "professional",
-    name: "Professional",
-    description: "Ideal for growing teams and power users",
-    price: 29,
-    period: "month",
-    originalPrice: 39,
-    badge: "Most Popular",
-    featured: true,
-    image: "🚀",
-    features: [
-      "Up to 20 users",
-      "10,000 AI tasks/month",
-      "Advanced integrations",
-      "Priority support",
-      "Advanced analytics",
-      "Mobile app access",
-      "Custom workflows",
-      "API access",
-      "Team collaboration tools"
-    ],
-    limitations: [],
-    cta: "Get Started",
-    color: "blue"
-  },
-  {
-    id: "enterprise",
-    name: "Enterprise",
-    description: "Complete solution for large organizations",
-    price: 99,
-    period: "month",
-    originalPrice: null,
-    badge: "Advanced",
-    featured: false,
-    image: "🏢",
-    features: [
-      "Unlimited users",
-      "Unlimited AI tasks",
-      "All integrations",
-      "Dedicated support",
-      "Custom analytics",
-      "Mobile app access",
-      "Custom workflows",
-      "Advanced API access",
-      "Team collaboration tools",
-      "SSO & advanced security",
-      "Custom training",
-      "White-label options"
-    ],
-    limitations: [],
-    cta: "Get Started",
-    color: "purple"
-  }
-];
-
 export function Pricing({ className }: PricingProps) {
+  const { siteData } = useSiteData();
+  const pricingPlans = (siteData?.site?.pricing && Array.isArray(siteData.site.pricing)) ? siteData.site.pricing : [];
   const [billingCycle, setBillingCycle] = useState<"monthly" | "annual">("monthly");
   const { trackConversion, trackEngagement } = useAnalytics();
+
+  // Show loading state if no pricing plans are available
+  if (!siteData || !siteData.site || !Array.isArray(pricingPlans) || pricingPlans.length === 0) {
+    return (
+      <section
+        id="pricing"
+        className={cn(
+          "py-20 bg-background",
+          className
+        )}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
+              Simple, Transparent Pricing
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+              Loading pricing plans...
+            </p>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   const handlePlanSelect = (planId: string, planName: string) => {
     trackConversion('pricing_click', planId, planName);
@@ -249,7 +194,7 @@ export function Pricing({ className }: PricingProps) {
           whileInView="animate"
           viewport={{ once: true }}
         >
-          {pricingPlans.map((plan, index) => {
+          {pricingPlans && pricingPlans.length > 0 ? pricingPlans.map((plan, index) => {
             const currentPrice = getPlanPrice(plan);
             const isSelected = billingCycle === "annual" && plan.price > 0;
             
@@ -338,7 +283,7 @@ export function Pricing({ className }: PricingProps) {
                   <div className="mb-8">
                     <h4 className="font-semibold text-foreground mb-4">What's included:</h4>
                     <ul className="space-y-3">
-                      {plan.features.map((feature, featureIndex) => (
+                      {plan.features && Array.isArray(plan.features) && plan.features.map((feature, featureIndex) => (
                         <li key={featureIndex} className="feature-item flex items-start gap-3">
                           <CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
                           <span className="text-sm text-foreground">{feature}</span>
@@ -347,7 +292,7 @@ export function Pricing({ className }: PricingProps) {
                     </ul>
 
                     {/* Limitations */}
-                    {plan.limitations.length > 0 && (
+                    {plan.limitations && Array.isArray(plan.limitations) && plan.limitations.length > 0 && (
                       <div className="mt-4 pt-4 border-t border-border">
                         <h4 className="font-semibold text-foreground mb-2">Limitations:</h4>
                         <ul className="space-y-2">
@@ -386,7 +331,11 @@ export function Pricing({ className }: PricingProps) {
                 )}
               </motion.div>
             );
-          })}
+          }) : (
+            <div className="text-center py-12">
+              <p className="text-muted-foreground">No pricing plans available.</p>
+            </div>
+          )}
         </motion.div>
 
         {/* Trust Indicators */}

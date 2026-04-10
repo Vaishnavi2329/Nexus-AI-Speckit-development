@@ -6,6 +6,7 @@ import { Brain, Zap, Shield, Globe, BarChart3, Users, CheckCircle2, ArrowRight }
 import { Button } from "@/components/ui/button";
 import { useAnalytics } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
+import { useSiteData } from "@/contexts/site-data-context";
 
 interface FeaturesProps {
   className?: string;
@@ -58,6 +59,8 @@ const features = [
 ];
 
 export function Features({ className }: FeaturesProps) {
+  const { siteData } = useSiteData();
+  const features = (siteData?.site?.features && Array.isArray(siteData.site.features)) ? siteData.site.features : [];
   const { trackConversion, trackEngagement } = useAnalytics();
 
   const handleLearnMore = (featureTitle: string) => {
@@ -185,7 +188,7 @@ export function Features({ className }: FeaturesProps) {
 
                   {/* Benefits */}
                   <div className="space-y-3 mb-6">
-                    {feature.benefits.map((benefit, benefitIndex) => (
+                    {feature.benefits?.map((benefit: string, benefitIndex: number) => (
                       <div key={benefitIndex} className="flex items-center gap-3">
                         <CheckCircle2 className="w-4 h-4 text-green-500 flex-shrink-0" />
                         <span className="text-sm text-muted-foreground">{benefit}</span>

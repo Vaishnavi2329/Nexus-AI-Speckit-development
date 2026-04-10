@@ -8,6 +8,7 @@ import { useTheme } from "@/components/ui/providers";
 import { useAnalytics } from "@/lib/analytics";
 import { variants, staggerConfig } from "@/lib/animations";
 import { cn } from "@/lib/utils";
+import { useSiteData } from "@/contexts/site-data-context";
 
 interface HeroProps {
   className?: string;
@@ -24,13 +25,20 @@ const rotatingKeywords = [
 ];
 
 export function Hero({ className }: HeroProps) {
+  const { siteData } = useSiteData();
+  const heroData = siteData?.site?.hero || {};
   const [currentKeywordIndex, setCurrentKeywordIndex] = useState(0);
   const [isVisible, setIsVisible] = useState(true);
   const [scrollY, setScrollY] = useState(0);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [isClient, setIsClient] = useState(false);
   const { theme } = useTheme();
   const { trackConversion, trackEngagement } = useAnalytics();
   const heroRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   // Rotate keywords
   useEffect(() => {
@@ -47,8 +55,6 @@ export function Hero({ className }: HeroProps) {
 
   // Handle scroll for parallax
   useEffect(() => {
-    if (typeof window === 'undefined') return;
-
     const handleScroll = () => {
       setScrollY(window.scrollY);
     };
@@ -61,8 +67,6 @@ export function Hero({ className }: HeroProps) {
 
   // Handle mouse movement for parallax
   useEffect(() => {
-    if (typeof window === 'undefined') return;
-
     const handleMouseMove = (e: MouseEvent) => {
       setMousePosition({ x: e.clientX, y: e.clientY });
     };
@@ -151,7 +155,7 @@ export function Hero({ className }: HeroProps) {
         <div className="absolute inset-0 bg-gradient-to-b from-sky-1900 to-sky-1700 opacity-50" />
         
         {/* Dynamic layers - only render on client */}
-        {typeof window !== 'undefined' && (
+        {isClient && (
           <>
             {/* Layer 1 - Slow moving shapes */}
             <div 

@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { AsyncButton } from "@/components/ui/async-button";
 import { useAnalytics } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
+import { useSiteData } from "@/contexts/site-data-context";
 
 interface ContactProps {
   className?: string;
@@ -30,6 +31,8 @@ const contactSchema = z.object({
 type ContactFormData = z.infer<typeof contactSchema>;
 
 export function Contact({ className }: ContactProps) {
+  const { siteData } = useSiteData();
+  const contactData = siteData?.site?.contact || {};
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);

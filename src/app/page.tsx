@@ -11,6 +11,7 @@ import HowItWorks from "@/components/sections/how-it-works";
 import Integrations from "@/components/sections/integrations";
 import Demo from "@/components/sections/demo";
 import Pricing from "@/components/sections/pricing";
+import Blog from "@/components/sections/blog";
 import FAQ from "@/components/sections/faq";
 import Contact from "@/components/sections/contact";
 import FinalCTA from "@/components/sections/final-cta";
@@ -57,6 +58,9 @@ export default function Home() {
           
           {/* Pricing Section */}
           <Pricing />
+          
+          {/* Blog Section */}
+          <Blog />
           
           {/* FAQ Section */}
           <FAQ />

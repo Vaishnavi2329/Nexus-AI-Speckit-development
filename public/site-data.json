@@ -1,0 +1,173 @@
+{
+  "admin": {
+    "email": "admin@nexusai.com",
+    "password": "admin123",
+    "name": "Administrator"
+  },
+  "site": {
+    "hero": {
+      "title": "Nexus AI",
+      "tagline": "Transform Your Workflow with AI-Powered Productivity",
+      "description": "The ultimate AI assistant that automates tasks, manages projects, and boosts team productivity."
+    },
+    "features": [
+      {
+        "id": "1",
+        "title": "Smart Task Automation",
+        "description": "Let AI handle your repetitive tasks so you can focus on what matters most.",
+        "icon": "🤖"
+      },
+      {
+        "id": "2",
+        "title": "Intelligent Scheduling",
+        "description": "AI-powered calendar management that optimizes your time and priorities.",
+        "icon": "📅"
+      },
+      {
+        "id": "3",
+        "title": "Team Collaboration",
+        "description": "Seamless integration with your favorite tools and real-time team sync.",
+        "icon": "👥"
+      },
+      {
+        "id": "4",
+        "title": "Analytics & Insights",
+        "description": "Get detailed analytics and AI-powered insights into your productivity.",
+        "icon": "📊"
+      }
+    ],
+    "testimonials": [
+      {
+        "id": "1",
+        "name": "Sarah Chen",
+        "role": "Product Manager at TechCorp",
+        "company": "TechCorp",
+        "content": "Nexus AI has completely transformed how our team operates. We've reduced meeting time by 60% and increased productivity by 40%. The AI automation is simply incredible.",
+        "rating": 5,
+        "avatar": "SC",
+        "featured": true,
+        "results": [
+          "60% less meetings",
+          "40% productivity increase",
+          "10 hours saved/week"
+        ],
+        "createdAt": "2024-01-15T10:00:00Z",
+        "updatedAt": "2024-01-15T10:00:00Z"
+      },
+      {
+        "id": "2",
+        "name": "Michael Rodriguez",
+        "role": "CEO at InnovateCo",
+        "company": "InnovateCo",
+        "content": "I was skeptical about AI tools, but Nexus AI exceeded all expectations. It's like having a personal assistant for every team member. Our ROI was positive within the first month.",
+        "rating": 5,
+        "avatar": "MR",
+        "featured": true,
+        "results": [
+          "ROI in 1 month",
+          "Team productivity doubled",
+          "Customer satisfaction up 35%"
+        ],
+        "createdAt": "2024-01-20T14:30:00Z",
+        "updatedAt": "2024-01-20T14:30:00Z"
+      }
+    ],
+    "blogs": [
+      {
+        "id": "1",
+        "title": "Getting Started with AI-Powered Productivity",
+        "slug": "getting-started-with-ai-powered-productivity",
+        "content": "# Getting Started with AI-Powered Productivity\n\nIn today's fast-paced business environment, productivity is more important than ever. With the rise of artificial intelligence, we now have powerful tools at our disposal to enhance our work processes and achieve more in less time.\n\n## Understanding AI Productivity\n\nAI-powered productivity tools leverage machine learning algorithms to automate repetitive tasks, provide intelligent insights, and enhance decision-making processes. These tools can analyze patterns in your work habits and suggest optimizations you might not have considered.\n\n## Key Benefits\n\n1. **Time Savings**: Automate routine tasks and focus on high-value work\n2. **Improved Accuracy**: Reduce human error in data processing and analysis\n3. **Enhanced Creativity**: Use AI as a brainstorming partner for new ideas\n4. **Better Decision Making**: Get data-driven insights for strategic choices\n\n## Implementation Strategies\n\nStart by identifying the most time-consuming tasks in your workflow. These are prime candidates for AI automation. Begin with small pilots and gradually expand as you see positive results.\n\n## Best Practices\n\n- Start with clear objectives\n- Measure and track results\n- Provide proper training to your team\n- Continuously optimize based on feedback\n\nThe future of work is here, and AI is leading the way. Embrace these tools to stay competitive and drive your organization forward.",
+        "excerpt": "Discover how AI-powered productivity tools can transform your workflow and help you achieve more in less time.",
+        "published": true,
+        "createdAt": "2024-02-15T10:00:00Z",
+        "updatedAt": "2024-02-15T10:00:00Z",
+        "category": "Productivity",
+        "readTime": 3,
+        "author": "Nexus AI Team",
+        "tags": [
+          "AI",
+          "Productivity",
+          "Automation",
+          "Workflow"
+        ]
+      },
+      {
+        "id": "1775848309435",
+        "title": "vaish",
+        "content": "helooooo",
+        "excerpt": "hi helllooo",
+        "published": true,
+        "category": "tech",
+        "author": "vasih",
+        "tags": [],
+        "readTime": 0,
+        "slug": "vaish",
+        "createdAt": "2026-04-10T19:11:49.436Z",
+        "updatedAt": "2026-04-10T19:11:49.512Z"
+      }
+    ],
+    "pricing": [
+      {
+        "id": "starter",
+        "name": "Starter",
+        "price": 0,
+        "period": "month",
+        "description": "Perfect for individuals and small teams getting started",
+        "features": [
+          "Up to 3 users",
+          "1,000 AI tasks/month",
+          "Basic integrations",
+          "Email support",
+          "Standard analytics",
+          "Mobile app access"
+        ],
+        "badge": null,
+        "featured": false,
+        "originalPrice": null,
+        "cta": "Get Started Free"
+      },
+      {
+        "id": "professional",
+        "name": "Professional",
+        "price": 56,
+        "period": "month",
+        "description": "Ideal for growing teams and power users",
+        "features": [
+          "Up to 20 users",
+          "10,000 AI tasks/month",
+          "Advanced integrations",
+          "Priority support",
+          "Advanced analytics",
+          "Mobile app access",
+          "Custom workflows",
+          "API access",
+          "Team collaboration tools"
+        ],
+        "badge": "Most Popular",
+        "featured": true,
+        "originalPrice": 39,
+        "cta": "Get Started"
+      },
+      {
+        "id": "1775849142661",
+        "name": "PREMIUM ",
+        "price": 99,
+        "period": "month",
+        "description": "it is the best ",
+        "features": [
+          "save space "
+        ],
+        "badge": "",
+        "featured": true,
+        "originalPrice": null,
+        "cta": "Get Started"
+      }
+    ],
+    "contact": {
+      "email": "contact@nexusai.com",
+      "phone": "+1 (555) 123-4567",
+      "address": "123 AI Street, Tech City, TC 12345"
+    }
+  }
+}

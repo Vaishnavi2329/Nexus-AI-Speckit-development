@@ -3,7 +3,22 @@
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import { LucideIcon, Moon, Sun, X } from "lucide-react";
+import { 
+  LucideIcon, 
+  Moon, 
+  Sun, 
+  X, 
+  AlertTriangle, 
+  Star, 
+  MessageSquare, 
+  Zap, 
+  Globe, 
+  Play, 
+  CreditCard, 
+  HelpCircle, 
+  Mail, 
+  FileText 
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useTheme } from "@/components/ui/providers";
 import { useAnalytics } from "@/lib/analytics";
@@ -25,47 +40,52 @@ const navItems: NavItem[] = [
   {
     name: 'The Productivity Crisis',
     url: '#problem',
-    icon: 'AlertTriangle' as any
+    icon: AlertTriangle
   },
   {
     name: 'Features',
     url: '#features',
-    icon: 'Star' as any
+    icon: Star
   },
   {
     name: 'Testimonials',
     url: '#testimonials',
-    icon: 'MessageSquare' as any
+    icon: MessageSquare
   },
   {
     name: 'How It Works',
     url: '#how-it-works',
-    icon: 'Zap' as any
+    icon: Zap
   },
   {
     name: 'Integrations',
     url: '#integrations',
-    icon: 'Globe' as any
+    icon: Globe
   },
   {
     name: 'Demo',
     url: '#demo',
-    icon: 'Play' as any
+    icon: Play
   },
   {
     name: 'Pricing',
     url: '#pricing',
-    icon: 'CreditCard' as any
+    icon: CreditCard
+  },
+  {
+    name: 'Blog',
+    url: '#blog',
+    icon: FileText
   },
   {
     name: 'FAQ',
     url: '#faq',
-    icon: 'HelpCircle' as any
+    icon: HelpCircle
   },
   {
     name: 'Contact',
     url: '#contact',
-    icon: 'Mail' as any
+    icon: Mail
   }
 ];
 
