@@ -41,7 +41,7 @@ export function SiteDataProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const loadSiteData = async () => {
       try {
-        const response = await fetch('/site-data.json');
+        const response = await fetch('/api/site-data');
         const data = await response.json();
         setSiteData(data);
       } catch (error) {
